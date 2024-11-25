@@ -1,0 +1,32 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite",
+        "sail": "concurrently \"./vendor/bin/sail\""
+    },
+    "devDependencies": {
+        "@popperjs/core": "^2.11.6",
+        "@vitejs/plugin-react": "^4.3.3",
+        "autoprefixer": "^10.4.20",
+        "axios": "^1.7.7",
+        "bootstrap": "^5.2.3",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^1.0",
+        "postcss": "^8.4.47",
+        "sass": "^1.56.1",
+        "tailwindcss": "^3.4.13",
+        "vite": "^5.0"
+    },
+    "dependencies": {
+        "@easyblocks/core": "^1.0.10",
+        "@easyblocks/editor": "^1.0.10",
+        "@hookform/resolvers": "^3.9.1",
+        "@measured/puck": "^0.16.2",
+        "react-data-table-component": "^7.6.2",
+        "react-hook-form": "^7.53.2",
+        "reactstrap": "^9.2.3",
+        "yup": "^1.4.0"
+    }
+}
