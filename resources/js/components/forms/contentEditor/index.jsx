@@ -174,21 +174,11 @@ const easyblocksConfig = {
     hideCloseButton: true,
 }
 
-export function DummyBanner(props) {
-    const { Root, Title } = props
-
-    return (
-        <Root.type {...Root.props}>
-            <Title.type {...Title.props} />
-        </Root.type>
-    )
-}
-
-export default function EasyblocksEditorPage() {
+export default function EasyblocksEditorPage([rootComponentId]) {
     return (
         <EasyblocksEditor
-        // config={easyblocksConfig}
-        // components={{ DummyBanner }}
+            config={easyblocksConfig}
+            rootComponentId={rootComponentId}
         />
     )
 }

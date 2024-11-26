@@ -8,7 +8,7 @@ import render from "../../utils/render"
 
 export default function View() {
     return (
-        <Wrapper title="Editor de landings" form={<Form />}>
+        <Wrapper title="Editor de landings" formUrl="/pages/create">
             <Datatable columns={columns} />
         </Wrapper>
     )

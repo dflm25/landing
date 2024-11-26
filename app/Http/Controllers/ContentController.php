@@ -21,7 +21,7 @@ class ContentController extends Controller
      */
     public function create()
     {
-        return view('app', ['title' => 'Crear landing', 'script' => 'editor/contentForm']);
+        return view('editor', ['title' => 'Crear landing', 'script' => 'editor/contentForm']);
     }
 
     /**

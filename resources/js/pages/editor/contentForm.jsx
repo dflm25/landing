@@ -1,193 +1,71 @@
-import { EasyblocksEditor } from "@easyblocks/editor"
-import { EasyblocksBackend } from "@easyblocks/core"
-import { ReactElement } from "react"
+import React from "react"
+import { Puck } from "@measured/puck"
+import render from "../../utils/render"
 
-const easyblocksConfig = {
-    backend: new EasyblocksBackend({
-        accessToken: "",
-    }),
-    locales: [
-        {
-            code: "en-US",
-            isDefault: true,
-        },
-        {
-            code: "de-DE",
-            fallback: "en-US",
-        },
-    ],
-    components: [
-        {
-            id: "DummyBanner",
-            label: "DummyBanner",
-            schema: [
-                {
-                    prop: "backgroundColor",
-                    label: "Background Color",
-                    type: "color",
+import "@measured/puck/puck.css"
+
+const config = {
+    components: {
+        HeadingBlock: {
+            fields: {
+                children: {
+                    type: "text",
                 },
-                {
-                    prop: "padding",
-                    label: "Pading",
-                    type: "space",
-                },
-                {
-                    prop: "Title",
-                    type: "component",
-                    required: true,
-                    accepts: ["@easyblocks/rich-text"],
-                },
-            ],
-            styles: ({ values }) => {
-                return {
-                    styled: {
-                        Root: {
-                            backgroundColor: values.backgroundColor,
-                            padding: values.padding,
-                        },
-                    },
-                }
+            },
+            render: ({ children }) => {
+                return <h1>{children}</h1>
             },
         },
-    ],
-    tokens: {
-        colors: [
-            {
-                id: "black",
-                label: "Black",
-                value: "#000000",
-                isDefault: true,
+        Paragraph: {
+            fields: {
+                text: { type: "text" },
             },
-            {
-                id: "white",
-                label: "White",
-                value: "#ffffff",
+            defaultProps: {
+                text: "Paragraph",
             },
-            {
-                id: "coral",
-                label: "Coral",
-                value: "#ff7f50",
+            render: ({ text }) => (
+                <div style={{ padding: 64 }}>
+                    <p>{text}</p>
+                </div>
+            ),
+        },
+        BootstrapCard: {
+            fields: {
+                title: { type: "text", label: "Title" },
+                content: { type: "textarea", label: "Content" },
+                imageUrl: { type: "text", label: "Image URL" },
             },
-        ],
-        fonts: [
-            {
-                id: "body",
-                label: "Body",
-                value: {
-                    fontSize: 18,
-                    lineHeight: 1.8,
-                    fontFamily: "sans-serif",
-                },
-                isDefault: true,
+            defaultProps: {
+                title: "Card Title",
+                content: "Card content goes here.",
+                imageUrl: "https://via.placeholder.com/150",
             },
-            {
-                id: "heading",
-                label: "Heading",
-                value: {
-                    fontSize: 24,
-                    fontFamily: "sans-serif",
-                    lineHeight: 1.2,
-                    fontWeight: 700,
-                },
-            },
-        ],
-        space: [
-            {
-                id: "0",
-                label: "0",
-                value: "0px",
-                isDefault: true,
-            },
-            {
-                id: "1",
-                label: "1",
-                value: "1px",
-            },
-            {
-                id: "2",
-                label: "2",
-                value: "2px",
-            },
-            {
-                id: "4",
-                label: "4",
-                value: "4px",
-            },
-            {
-                id: "6",
-                label: "6",
-                value: "6px",
-            },
-            {
-                id: "8",
-                label: "8",
-                value: "8px",
-            },
-            {
-                id: "12",
-                label: "12",
-                value: "12px",
-            },
-            {
-                id: "16",
-                label: "16",
-                value: "16px",
-            },
-            {
-                id: "24",
-                label: "24",
-                value: "24px",
-            },
-            {
-                id: "32",
-                label: "32",
-                value: "32px",
-            },
-            {
-                id: "48",
-                label: "48",
-                value: "48px",
-            },
-            {
-                id: "64",
-                label: "64",
-                value: "64px",
-            },
-            {
-                id: "96",
-                label: "96",
-                value: "96px",
-            },
-            {
-                id: "128",
-                label: "128",
-                value: "128px",
-            },
-            {
-                id: "160",
-                label: "160",
-                value: "160px",
-            },
-        ],
+            render: ({ title, content, imageUrl }) => (
+                <div className="card" style={{ width: "18rem" }}>
+                    <img
+                        src={imageUrl}
+                        className="card-img-top"
+                        alt="Card image cap"
+                    />
+                    <div className="card-body">
+                        <h5 className="card-title">{title}</h5>
+                        <p className="card-text">{content}</p>
+                    </div>
+                </div>
+            ),
+        },
     },
-    hideCloseButton: true,
 }
 
-function DummyBanner(props) {
-    const { Root, Title } = props
-    console.log(Root)
-    return (
-        <Root.type {...Root.props}>
-            <Title.type {...Title.props} />
-        </Root.type>
-    )
+// Describe the initial data
+const initialData = {}
+
+// Save the data to your database
+const save = (data) => {}
+
+// Render Puck editor
+export function View() {
+    return <Puck config={config} data={initialData} onPublish={save} />
 }
 
-export default function EeasyblocksEditorPage() {
-    return (
-        <EasyblocksEditor
-            config={easyblocksConfig}
-            components={{ DummyBanner }}
-        />
-    )
-}
+render(View)

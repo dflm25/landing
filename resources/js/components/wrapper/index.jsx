@@ -1,7 +1,13 @@
 import React from "react"
 import Modal from "../modal"
 
-function Wrapper({ title = "", children = {}, form = null, modalTitle = "" }) {
+function Wrapper({
+    title = "",
+    children = {},
+    form = null,
+    formUrl = null,
+    modalTitle = "",
+}) {
     const [showModal, setShowModal] = React.useState(false)
 
     return (
@@ -16,6 +22,14 @@ function Wrapper({ title = "", children = {}, form = null, modalTitle = "" }) {
                                     href="#"
                                     className="btn btn-block btn-info btn-sm"
                                     onClick={() => setShowModal(true)}
+                                >
+                                    Agregar
+                                </a>
+                            )}
+                            {formUrl && (
+                                <a
+                                    href={formUrl}
+                                    className="btn btn-block btn-info btn-sm"
                                 >
                                     Agregar
                                 </a>

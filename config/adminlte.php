@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'EasyLanding',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Easy</b>Landing',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -322,10 +322,15 @@ return [
         ],
         [
             'text' => 'pages',
-            'url' => 'admin/pages',
+            'url' => 'pages',
             'icon' => 'far fa-fw fa-file',
             'label' => 4,
             'label_color' => 'success',
+        ],
+        [
+            'text' => 'Productos',
+            'url' => 'products',
+            'icon' => 'far fa-fw fa-file',
         ],
         ['header' => 'account_settings'],
         [
@@ -338,7 +343,7 @@ return [
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
         ],
-        [
+        /* [
             'text' => 'multilevel',
             'icon' => 'fas fa-fw fa-share',
             'submenu' => [
@@ -375,8 +380,8 @@ return [
                     'url' => '#',
                 ],
             ],
-        ],
-        ['header' => 'labels'],
+        ], */
+        /* ['header' => 'labels'],
         [
             'text' => 'important',
             'icon_color' => 'red',
@@ -391,7 +396,7 @@ return [
             'text' => 'information',
             'icon_color' => 'cyan',
             'url' => '#',
-        ],
+        ], */
     ],
 
     /*
