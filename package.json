@@ -26,6 +26,8 @@
         "@measured/puck": "^0.16.2",
         "react-data-table-component": "^7.6.2",
         "react-hook-form": "^7.53.2",
+        "react-tag-input": "^6.10.3",
+        "react-tag-input-component": "^2.0.2",
         "reactstrap": "^9.2.3",
         "yup": "^1.4.0"
     }

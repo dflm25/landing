@@ -16,7 +16,9 @@ return new class extends Migration
             $table->foreignUuid('business_id')->constrained('business_info');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->text('picture')->nullable();
             $table->decimal('base_price', 10, 2);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
