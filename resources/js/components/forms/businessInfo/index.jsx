@@ -1,87 +1,55 @@
-import axios from "axios"
 import React, { useState } from "react"
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-const BusinessInfoForm = () => {
-    const [formData, setFormData] = useState({
-        name: "",
-        address: "",
-        email: "",
-        phone: "",
-    })
+import ColorPalette from "../../colorPalette"
+import schema from "./schema"
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        })
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        try {
-            await axios.post("/business-info", formData)
-            alert("Business info created successfully.")
-        } catch (error) {
-            console.error(
-                "There was an error creating the business info!",
-                error
-            )
-        }
-    }
+const BusinessInfoForm = ({ onSubmit }) => {
+    const { register, handleSubmit, formState: { errors }, control } = useForm({
+        resolver: yupResolver(schema),
+    });
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                />
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="row">
+                <div className="col-md-6">
+                    <div className="form-group">
+                        <label htmlFor="name">Name</label>
+                        <input
+                            type="text"
+                            className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                            id="name"
+                            {...register("name")}
+                        />
+                        {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
+                    </div>
+                </div>
+                <div className="col-md-6">
+                    <div className="form-group">
+                        <label htmlFor="logo_url">Logo URL</label>
+                        <input
+                            type="file"
+                            className={`form-control ${errors.logo_url ? "is-invalid" : ""}`}
+                            id="logo"
+                            {...register("logo_url")}
+                        />
+                        {errors.logo_url && <div className="invalid-feedback">{errors.logo_url.message}</div>}
+                    </div>
+                </div>
             </div>
-            <div className="form-group">
-                <label htmlFor="address">Address</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="address"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    required
-                />
+            <hr />
+            <div className="row">
+                <div className="col-md-12">
+                    <h3>Selecciona tus colores</h3>
+                    <Controller 
+                        name="color_palette" 
+                        control={control} 
+                        render={({ field }) => <ColorPalette {...field} />} 
+                    />
+                </div>
             </div>
-            <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="phone">Phone</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <button type="submit" className="btn btn-primary">
-                Submit
-            </button>
+            <button type="submit" className="btn btn-primary">Guardar</button>
         </form>
     )
 }

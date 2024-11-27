@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckBusinnesData;
 
 Route::get('/', function () {
     return view('welcome');
@@ -8,10 +9,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::group(['middleware' => 'auth'], function () {
-    Route::resource('pages', App\Http\Controllers\ContentController::class);
-    Route::resource('products', App\Http\Controllers\ProductController::class);
-    Route::resource('attributes', App\Http\Controllers\AttributeController::class);
+    Route::middleware([CheckBusinnesData::class])->group(function () {
+        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::resource('pages', App\Http\Controllers\ContentController::class);
+        Route::resource('products', App\Http\Controllers\ProductController::class);
+        Route::resource('attributes', App\Http\Controllers\AttributeController::class);
+    });
+    
+    Route::resource('business-info', App\Http\Controllers\BusinessController::class);
 });

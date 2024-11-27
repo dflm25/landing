@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasUuid;
 
-class business_info extends Model
+class BusinessInfo extends Model
 {
     use HasFactory, HasUuid;
 
+    protected $table = 'business_info';
     protected $fillable = ['name', 'address', 'email', 'phone'];
 }
