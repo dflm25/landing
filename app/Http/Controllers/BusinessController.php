@@ -12,8 +12,16 @@ class BusinessController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->expectsJson()) {
+            if ($request->user_id) {
+                $businessInfo = BusinessInfo::where('user_id', Auth::user()->id)->first();
+
+                return response()->json($businessInfo, 200);
+            }
+        }
+
         return view('app', ['title' => 'Informacion de tu compañia', 'script' => 'business/business']);
     }
 
@@ -35,7 +43,7 @@ class BusinessController extends Controller
             $existingBusinessInfo->logo_url = $logoPath;
             $existingBusinessInfo->save();
 
-            return response()->json(['message' => 'Business information updated successfully'], 200);
+            return response()->json(['message' => 'Business information updated successfully', 'data' => $existingBusinessInfo], 200);
         }
         $businessInfo = new BusinessInfo();
         $businessInfo->user_id = Auth::user()->id;
@@ -43,30 +51,6 @@ class BusinessController extends Controller
         $businessInfo->logo_url = $logoPath;
         $businessInfo->save();
 
-        return response()->json(['message' => 'Business information saved successfully'], 201);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json(['message' => 'Business information saved successfully', 'data' => $businessInfo], 201);
     }
 }

@@ -1,5 +1,7 @@
 import React from "react"
 import Modal from "../modal"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 function Wrapper({
     title = "",
@@ -42,7 +44,7 @@ function Wrapper({
             <Modal show={showModal} action={setShowModal} title={modalTitle}>
                 {form}
             </Modal>
-            {/* <Toast /> */}
+            <ToastContainer />
         </div>
     )
 }

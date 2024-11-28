@@ -1,5 +1,6 @@
 import axios from "axios"
 import config from "../config"
+import { toast } from "react-toastify"
 // import { AsyncStorageGetData } from "./storage"
 
 // Create an Axios instance
@@ -34,6 +35,9 @@ request.interceptors.request.use(
 request.interceptors.response.use(
     (response) => {
         // Handle successful response
+        if (response.status === 200) {
+            toast.success(response?.data?.message)
+        }
         return response.data
     },
     (error) => {

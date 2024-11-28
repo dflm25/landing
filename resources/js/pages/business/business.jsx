@@ -1,18 +1,30 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
+import { ToastContainer, toast } from "react-toastify"
 
 import BusinessInfoForm from "../../components/forms/businessInfo"
-import { create } from "../../services/crudServices"
+import { create, getByParam } from "../../services/crudServices"
 import render from "../../utils/render"
+import "react-toastify/dist/ReactToastify.css"
 
 function View() {
+    const [businessInfo, setBusinessInfo] = useState({})
     const handleSubmit = async (e) => {
         const formData = new FormData()
         formData.append("name", e.name)
         formData.append("logo_url", e.logo_url)
 
         const response = await create("business-info", formData)
-        console.log(response)
+        setBusinessInfo(response.data)
     }
+
+    useEffect(() => {
+        ;(async () => {
+            const response = await getByParam("business-info", {
+                user_id: "true",
+            })
+            setBusinessInfo(response)
+        })()
+    }, [])
 
     return (
         <div className="row">
@@ -23,10 +35,14 @@ function View() {
                         <div className="card-tools"></div>
                     </div>
                     <div className="card-body">
-                        <BusinessInfoForm onSubmit={handleSubmit} />
+                        <BusinessInfoForm
+                            onSubmit={handleSubmit}
+                            defaultValues={businessInfo}
+                        />
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     )
 }

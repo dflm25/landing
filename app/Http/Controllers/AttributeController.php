@@ -17,7 +17,7 @@ class AttributeController extends Controller
     {
         if ($request->expectsJson()) {
             // $accountId = Auth::user()->account_id ?? 1;
-            $response = Attribute::paginate(10);
+            $response = Attribute::with('values')->paginate(10);
             return response()->json($response);
         }
         return view('app', ['title' => 'Atributos', 'script' => 'attributes/attributes']);
