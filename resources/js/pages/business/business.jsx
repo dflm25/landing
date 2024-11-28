@@ -1,13 +1,11 @@
 import React from "react"
 
 import BusinessInfoForm from "../../components/forms/businessInfo"
-import {create} from "../../services/crudServices"
+import { create } from "../../services/crudServices"
 import render from "../../utils/render"
 
 function View() {
-
     const handleSubmit = async (e) => {
-        e.logo_url = e.logo_url[0]
         const formData = new FormData()
         formData.append("name", e.name)
         formData.append("logo_url", e.logo_url)
