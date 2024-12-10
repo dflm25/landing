@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
 function Wrapper({
-    title = "",
+    title = " ",
     children = {},
     form = null,
     formUrl = null,
@@ -12,6 +12,7 @@ function Wrapper({
     showModal,
     setShowModal,
 }) {
+    console.log("showModal", showModal)
     return (
         <div className="row">
             <div className="col-md-12">
@@ -21,9 +22,10 @@ function Wrapper({
                         <div className="card-tools">
                             {form && (
                                 <a
-                                    href="#"
                                     className="btn btn-block btn-info btn-sm"
-                                    onClick={() => setShowModal(true)}
+                                    onClick={() => {
+                                        setShowModal(true)
+                                    }}
                                 >
                                     Agregar
                                 </a>

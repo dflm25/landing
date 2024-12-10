@@ -8,8 +8,9 @@ import schema from "./formSchema"
 const Form = ({
     onSubmit,
     defaultValues = {},
-    actions: { handleToRemoveItem },
+    actions: {} = {},
 }) => {
+    console.log("defaultValues", defaultValues) 
     const {
         control,
         handleSubmit,

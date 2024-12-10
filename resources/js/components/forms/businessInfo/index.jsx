@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { useForm, Controller } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import config from "../../../config"
+
+import { renderImage } from './utils'
 import schema from "./schema"
+import render from "../../../utils/render"
 
 const BusinessInfoForm = ({ onSubmit, defaultValues }) => {
     const [file, setFile] = useState(null)
@@ -72,11 +74,7 @@ const BusinessInfoForm = ({ onSubmit, defaultValues }) => {
                     </div>
                 </div>
                 <div className="col-md-4 text-center">
-                    <img
-                        src={`${config.BASE_URL}storage/${defaultValues.logo_url}`}
-                        alt="Logo"
-                        className="img-fluid logo-busines"
-                    />
+                    {renderImage(defaultValues)}
                 </div>
             </div>
             <button type="submit" className="btn btn-primary">

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('content', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('business_id')->constrained('business_info');
+            $table->foreignUuid('business_info_id')->constrained('business_info');
             $table->string('title');
             $table->text('html_content');
             $table->json('json_content');

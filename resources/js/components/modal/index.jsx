@@ -10,7 +10,9 @@ const ModalComponent = ({ show, children, title, action, headerClass }) => {
             >
                 {title}
             </ModalHeader>
-            <ModalBody>{children}</ModalBody>
+            <ModalBody>
+                {children}
+            </ModalBody>
         </Modal>
     )
 }

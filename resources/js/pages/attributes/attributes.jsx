@@ -29,10 +29,6 @@ const ViewContent = withView(({ data, isLoading }) => {
         setShowModal(true)
     }
 
-    const handleToRemoveItem = (item) => {
-        // console.log("remove", item)
-    }
-
     return (
         <Wrapper
             title="Atributos"
@@ -44,7 +40,7 @@ const ViewContent = withView(({ data, isLoading }) => {
                 columns={columns}
                 data={data}
                 isLoading={isLoading}
-                actions={{ getToEdit, handleToRemoveItem }}
+                actions={{ getToEdit }}
             />
         </Wrapper>
     )
