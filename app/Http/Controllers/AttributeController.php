@@ -45,19 +45,12 @@ class AttributeController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $attribute = Attribute::with('values')->select('id', 'name')->findOrFail($id);
+        return response()->json($attribute);
     }
 
     /**
@@ -65,7 +58,24 @@ class AttributeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        DB::transaction(function () use ($request, $id) {
+            $attribute = Attribute::findOrFail($id);
+            $attribute->update([
+                'name' => $request->name,
+            ]);
+
+            $attribute->values()->delete();
+
+            foreach ($request->attribute_values as $value) {
+                AttributeValue::create(attributes: [
+                    'attribute_id' => $attribute->id,
+                    'value' => $value,
+                ]);
+            }
+        });
+
+        return response()->json(['message' => 'Atributo actualizado correctamente.']);
+
     }
 
     /**

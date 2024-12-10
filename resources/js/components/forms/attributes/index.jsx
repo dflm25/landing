@@ -5,7 +5,11 @@ import { TagsInput } from "react-tag-input-component"
 
 import schema from "./formSchema"
 
-const Form = ({ onSubmit, defaultValues = {} }) => {
+const Form = ({
+    onSubmit,
+    defaultValues = {},
+    actions: { handleToRemoveItem },
+}) => {
     const {
         control,
         handleSubmit,
@@ -46,6 +50,12 @@ const Form = ({ onSubmit, defaultValues = {} }) => {
                                 onChange={onChange}
                                 name="variations"
                                 placeHolder="Ingresa las variaciones"
+                                onRemoved={(removed) => {
+                                    const filtered = value.filter(
+                                        (item) => item !== removed
+                                    )
+                                    onChange(filtered)
+                                }}
                             />
                         )}
                     />
@@ -55,7 +65,12 @@ const Form = ({ onSubmit, defaultValues = {} }) => {
                         </p>
                     )}
                 </div>
-
+                <input
+                    id="id"
+                    className="form-control"
+                    {...register("id")}
+                    type="hidden"
+                />
                 <button type="submit" className="btn btn-primary">
                     Save Variations
                 </button>

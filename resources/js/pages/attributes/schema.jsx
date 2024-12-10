@@ -1,6 +1,6 @@
 import React from "react"
 
-export const columns = ({}) => {
+export const columns = ({ getToEdit }) => {
     return [
         {
             selector: (row) => row.name,
@@ -30,8 +30,9 @@ export const columns = ({}) => {
             cell: (row) => (
                 <div className="mw-100 text-right">
                     <a
-                        href={`/admin/campaigns/${row.id}/edit`}
+                        href="#"
                         className="btn btn-warning btn-sm ml-2"
+                        onClick={() => getToEdit(row.id)}
                     >
                         <i className="fa fa-edit"></i>
                     </a>

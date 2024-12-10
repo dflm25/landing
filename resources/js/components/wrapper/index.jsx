@@ -9,9 +9,9 @@ function Wrapper({
     form = null,
     formUrl = null,
     modalTitle = "",
+    showModal,
+    setShowModal,
 }) {
-    const [showModal, setShowModal] = React.useState(false)
-
     return (
         <div className="row">
             <div className="col-md-12">

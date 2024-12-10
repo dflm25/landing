@@ -5,18 +5,47 @@ import Wrapper from "../../components/wrapper"
 import Form from "../../components/forms/attributes"
 
 import { columns } from "./schema"
-import { create } from "../../services/crudServices"
+import { create, getById, update } from "../../services/crudServices"
+import { arrayToString } from "./util"
 import render from "../../utils/render"
 
 const ViewContent = withView(({ data, isLoading }) => {
+    const [showModal, setShowModal] = useState(false)
+    const [defaultValue, setDefaultValue] = useState(false)
+
     const handleSubmit = async (formData) => {
-        const response = await create("attributes", formData)
+        if (formData.id) {
+            const response = await update("attributes", formData)
+        } else {
+            const response = await create("attributes", formData)
+        }
         setRefresh(!refresh)
     }
 
+    const getToEdit = async (id) => {
+        const item = await getById("attributes", id)
+        item.attribute_values = arrayToString(item.values)
+        setDefaultValue(item)
+        setShowModal(true)
+    }
+
+    const handleToRemoveItem = (item) => {
+        // console.log("remove", item)
+    }
+
     return (
-        <Wrapper title="Atributos" form={<Form onSubmit={handleSubmit} />}>
-            <Datatable columns={columns} data={data} isLoading={isLoading} />
+        <Wrapper
+            title="Atributos"
+            form={<Form onSubmit={handleSubmit} defaultValues={defaultValue} />}
+            showModal={showModal}
+            setShowModal={setShowModal}
+        >
+            <Datatable
+                columns={columns}
+                data={data}
+                isLoading={isLoading}
+                actions={{ getToEdit, handleToRemoveItem }}
+            />
         </Wrapper>
     )
 }, "attributes")

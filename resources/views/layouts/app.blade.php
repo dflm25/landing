@@ -17,8 +17,10 @@
 
 @section('js')
     @php
-        $script = 'resources/js/pages/'.($script ?? '').'.jsx';
+        $file = 'resources/js/pages/'.($script ?? '').'.jsx';
     @endphp
     @viteReactRefresh
-    @vite(['resources/sass/app.scss', $script])
+    @if(isset($script))
+        @vite(['resources/sass/app.scss', $file])
+    @endif
 @stop
