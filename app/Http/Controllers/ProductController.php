@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
 
@@ -13,7 +14,6 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         if ($request->expectsJson()) {
-            // $accountId = Auth::user()->account_id ?? 1;
             $response = Product::where([ 'business_id'=> 1 ])->paginate(10);
             return response()->json($response);
         }
@@ -33,23 +33,36 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        if ($request->hasFile('picture')) {
+            $logoPath = $request->file('picture')->store('product', 'public');
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        $product = new Product();
+        $product->business_info_id = Auth::user()->businessInfo->id;
+        $product->name = $request->input('name');
+        $product->description = $request->input('description');
+        $product->base_price = $request->input('base_price');
+
+        if ($logoPath) {
+            $product->picture = $logoPath;
+        }
+        $product->save();
+
+        return response()->json(['message' => 'Atributo creado correctamente.', 'status' => 'success', 'data' => $product], 201);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, string $id)
     {
-        //
+        if ($request->expectsJson()) {
+            $response = Product::find($id);
+            return response()->json($response);
+        }
+        return view('app', [
+            'title' => 'Productos', 'script' => 'products/createProduct', 'id' => $id
+        ]);
     }
 
     /**

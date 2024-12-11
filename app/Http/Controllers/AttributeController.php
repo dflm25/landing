@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Attribute;
 use App\Models\AttributeValue;
@@ -16,8 +17,12 @@ class AttributeController extends Controller
     public function index(Request $request)
     {
         if ($request->expectsJson()) {
-            // $accountId = Auth::user()->account_id ?? 1;
-            $response = Attribute::with('values')->paginate(10);
+            if ($request->action === 'all') {
+                $response = Attribute::with('values')->where('business_info_id',  Auth::user()->businessInfo->id)->get();
+                return response()->json($response);
+            } 
+            
+            $response = Attribute::with('values')->where('business_info_id',  Auth::user()->businessInfo->id)->paginate(10);
             return response()->json($response);
         }
         return view('app', ['title' => 'Atributos', 'script' => 'attributes/attributes']);
@@ -31,6 +36,7 @@ class AttributeController extends Controller
         DB::transaction(function () use ($request) {
             $attribute = Attribute::create([
                 'name' => $request->name,
+                'business_info_id' =>  Auth::user()->businessInfo->id
             ]);
 
             foreach ($request->attribute_values as $value) {
@@ -41,7 +47,7 @@ class AttributeController extends Controller
             }
         });
 
-        return response()->json(['message' => 'Atributo creado correctamente.']);
+        return response()->json(['message' => 'Atributo creado correctamente.', 'status' => 'success']);
     }
 
     /**
@@ -62,6 +68,7 @@ class AttributeController extends Controller
             $attribute = Attribute::findOrFail($id);
             $attribute->update([
                 'name' => $request->name,
+                'business_info_id' =>  Auth::user()->businessInfo->id
             ]);
 
             $attribute->values()->delete();
@@ -74,7 +81,7 @@ class AttributeController extends Controller
             }
         });
 
-        return response()->json(['message' => 'Atributo actualizado correctamente.']);
+        return response()->json(['message' => 'Atributo actualizado correctamente.', 'status' => 'success']);
 
     }
 

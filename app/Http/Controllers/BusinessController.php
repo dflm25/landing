@@ -18,7 +18,6 @@ class BusinessController extends Controller
         if ($request->expectsJson()) {
             if ($request->user_id) {
                 $businessInfo = BusinessInfo::where('user_id', Auth::user()->id)->first();
-
                 return response()->json($businessInfo, 200);
             }
         }

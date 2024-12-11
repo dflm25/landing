@@ -29,7 +29,8 @@ export const columns = ({ getToEdit }) => {
             maxWidth: "100px",
             cell: (row) => (
                 <div className="mw-100 text-right">
-                    <a
+
+                    {row.name.includes(['Color', 'Talla']) ? <><a
                         href="#"
                         className="btn btn-warning btn-sm ml-2"
                         onClick={() => getToEdit(row.id)}
@@ -38,7 +39,7 @@ export const columns = ({ getToEdit }) => {
                     </a>
                     <a href="button" className="btn btn-danger btn-sm ml-2">
                         <i className="fa fa-trash"></i>
-                    </a>
+                    </a></> : <span>...</span>}
                 </div>
             ),
         },

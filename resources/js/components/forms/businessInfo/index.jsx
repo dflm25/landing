@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup"
 
 import { renderImage } from "./utils"
 import schema from "./schema"
-import render from "../../../utils/render"
 
 const BusinessInfoForm = ({ onSubmit, defaultValues }) => {
     const [file, setFile] = useState(null)
@@ -70,7 +69,7 @@ const BusinessInfoForm = ({ onSubmit, defaultValues }) => {
                     </div>
                 </div>
                 <div className="col-md-4 text-center">
-                    {renderImage(defaultValues)}
+                    {renderImage(defaultValues, 'logo_url')}
                 </div>
             </div>
             <button type="submit" className="btn btn-primary">

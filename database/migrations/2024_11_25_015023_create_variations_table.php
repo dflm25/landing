@@ -22,6 +22,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('attribute_id')->constrained('attributes')->onDelete('cascade');
             $table->string('value');
+            $table->string('code')->nullable();
             $table->timestamps();
         });
 

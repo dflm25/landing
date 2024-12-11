@@ -10,7 +10,7 @@ class AttributeValue extends Model
 {
     use HasFactory, HasUuid;
 
-    protected $fillable = ['attribute_id', 'value'];
+    protected $fillable = ['attribute_id', 'value', 'code'];
 
     public function attribute()
     {
