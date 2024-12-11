@@ -32,19 +32,19 @@ const Variations = ({ attributes, register }) => {
             {combinations.length > 0 && (
                 <div className="row">
                     <div className="col-md-12">
-                        <h4>Variaciones de Producto</h4>
-                        <table className='table'>
+                        <p>Variaciones de Producto</p>
+                        <table className='table table-striped'>
                                 <tr>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tbody>
                                     {combinations.map((combination, index) => (
                                         <tr>
-                                            <td><label>{combination.map(attr => {
-                                                console.log(attr)
-                                                return attr?.value
-                                            }).join(' - ')}</label></td>
+                                            <td>
+                                                <label>{combination.map(attr => attr?.value).join(' - ')}</label>
+                                            </td>
                                             <td>
                                                 <input
                                                     type="number"
