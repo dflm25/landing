@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useForm, Controller } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 
-import { renderImage } from './utils'
+import { renderImage } from "./utils"
 import schema from "./schema"
 import render from "../../../utils/render"
 
@@ -12,13 +12,15 @@ const BusinessInfoForm = ({ onSubmit, defaultValues }) => {
         register,
         handleSubmit,
         formState: { errors },
-        control,
+        reset,
     } = useForm({
         resolver: yupResolver(schema),
         defaultValues,
     })
 
-    useEffect(() => {}, [defaultValues])
+    useEffect(() => {
+        reset(defaultValues)
+    }, [defaultValues])
 
     const handleFileChange = (e) => {
         if (e.target.files) {
@@ -36,19 +38,13 @@ const BusinessInfoForm = ({ onSubmit, defaultValues }) => {
                 <div className="col-md-8">
                     <div className="form-group">
                         <label htmlFor="name">Name</label>
-                        <Controller
-                            name="name"
-                            control={control}
-                            render={({ field: { onChange, value } }) => (
-                                <input
-                                    type="text"
-                                    className={`form-control ${
-                                        errors.name ? "is-invalid" : ""
-                                    }`}
-                                    onChange={(e) => onChange(e.target.value)}
-                                    value={value}
-                                />
-                            )}
+                        <input
+                            type="text"
+                            id="name"
+                            className={`form-control ${
+                                errors.name ? "is-invalid" : ""
+                            }`}
+                            {...register("name")}
                         />
                         {errors.name && (
                             <div className="invalid-feedback">

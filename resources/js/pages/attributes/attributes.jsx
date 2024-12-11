@@ -6,18 +6,18 @@ import Form from "../../components/forms/attributes"
 
 import { columns } from "./schema"
 import { create, getById, update } from "../../services/crudServices"
-import { arrayToString } from "./util"
+import { arrayToString, showMessage } from "./util"
 import render from "../../utils/render"
 
-const ViewContent = withView(({ data, isLoading }) => {
+const ViewContent = withView(({ data, isLoading, refresh, setRefresh }) => {
     const [showModal, setShowModal] = useState(false)
     const [defaultValue, setDefaultValue] = useState(false)
 
     const handleSubmit = async (formData) => {
         if (formData.id) {
-            const response = await update("attributes", formData)
+            showMessage(await update("attributes", formData))
         } else {
-            const response = await create("attributes", formData)
+            showMessage(await create("attributes", formData))
         }
         setRefresh(!refresh)
     }

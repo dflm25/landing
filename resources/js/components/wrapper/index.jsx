@@ -12,7 +12,6 @@ function Wrapper({
     showModal,
     setShowModal,
 }) {
-    console.log("showModal", showModal)
     return (
         <div className="row">
             <div className="col-md-12">

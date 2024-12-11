@@ -18,7 +18,6 @@ class BusinessInfo extends Model
     protected static function booted()
     {
         static::created(function ($account) {
-            // Ejecutar el seeder con el account_id
             $seeder = new AttributeSeeder($account->id);
             $seeder->run();
         });
