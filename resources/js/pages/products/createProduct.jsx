@@ -5,17 +5,17 @@ import render from "../../utils/render"
 import { create, getById, getByParam } from "../../services/crudServices"
 
 const View = () => {
-    const [product, setProduct] = useState(null);
-    const [attributes, setAttributes] = useState(null);
+    const [product, setProduct] = useState(null)
+    const [attributes, setAttributes] = useState(null)
 
     useEffect(() => {
-        (async () => {
-           const root = document.getElementById("root").attributes['data-id'].value
-
+        ;(async () => {
+            const root =
+                document.getElementById("root").attributes["data-id"].value
             if (root) {
                 setProduct(await getById("products", root))
-                setAttributes(await getByParam("attributes", { action: 'all' }))
             }
+            setAttributes(await getByParam("attributes", { action: "all" }))
         })()
     }, [])
 
@@ -32,9 +32,9 @@ const View = () => {
     return (
         <Wrapper title="Crear un producto">
             <FormProduct
-                onSubmit={handleSubmit} 
+                onSubmit={handleSubmit}
                 defaultValues={product}
-                options={attributes} 
+                options={attributes}
             />
         </Wrapper>
     )

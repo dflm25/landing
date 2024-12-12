@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users');
             $table->string('name');
+            $table->string('subdomain')->unique();
             $table->string('logo_url')->nullable();
             $table->json('color_palette')->nullable();
             $table->timestamps();

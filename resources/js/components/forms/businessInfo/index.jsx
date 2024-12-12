@@ -36,7 +36,7 @@ const BusinessInfoForm = ({ onSubmit, defaultValues }) => {
             <div className="row">
                 <div className="col-md-8">
                     <div className="form-group">
-                        <label htmlFor="name">Name</label>
+                        <label htmlFor="name">Nombre de tu negocio</label>
                         <input
                             type="text"
                             id="name"
@@ -48,6 +48,23 @@ const BusinessInfoForm = ({ onSubmit, defaultValues }) => {
                         {errors.name && (
                             <div className="invalid-feedback">
                                 {errors.name.message}
+                            </div>
+                        )}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="name">Dominio</label>
+                        <input
+                            type="text"
+                            id="subdomain"
+                            className={`form-control ${
+                                errors.name ? "is-invalid" : ""
+                            }`}
+                            placeholder="subdomain.easylanding.com"
+                            {...register("subdomain")}
+                        />
+                        {errors.subdomain && (
+                            <div className="invalid-feedback">
+                                {errors.subdomain.message}
                             </div>
                         )}
                     </div>
@@ -69,7 +86,7 @@ const BusinessInfoForm = ({ onSubmit, defaultValues }) => {
                     </div>
                 </div>
                 <div className="col-md-4 text-center">
-                    {renderImage(defaultValues, 'logo_url')}
+                    {renderImage(defaultValues, "logo_url")}
                 </div>
             </div>
             <button type="submit" className="btn btn-primary">
