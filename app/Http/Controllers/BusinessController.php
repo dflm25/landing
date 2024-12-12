@@ -39,6 +39,7 @@ class BusinessController extends Controller
 
         if ($existingBusinessInfo) {
             $existingBusinessInfo->name = $request->input('name');
+            $existingBusinessInfo->subdomain = $request->input('subdomain');
             if ($logoPath) {
                 $existingBusinessInfo->logo_url = $logoPath;
             }
@@ -49,6 +50,7 @@ class BusinessController extends Controller
         $businessInfo = new BusinessInfo();
         $businessInfo->user_id = Auth::user()->id;
         $businessInfo->name = $request->input('name');
+        $businessInfo->subdomain = $request->input('subdomain');
         if ($logoPath) {
             $businessInfo->logo_url = $logoPath;
         }

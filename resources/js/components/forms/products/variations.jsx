@@ -3,7 +3,7 @@ import { useFieldArray } from "react-hook-form"
 
 const Variations = ({ attributes, register, control }) => {
     const [combinations, setCombinations] = useState([])
-    const [files, setFiles] = useState({})
+    // const [files, setFiles] = useState({})
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -17,14 +17,9 @@ const Variations = ({ attributes, register, control }) => {
                     (attribute) => attribute.values
                 )
                 const combinations = []
-
                 const helper = (index, current) => {
                     if (index === attributeValues.length) {
                         combinations.push(current)
-                        const newAppend = current.map((attr, i) => ({
-                            [`var_${i}`]: attr.id,
-                        }))
-                        append(newAppend)
                         return
                     }
                     attributeValues[index].forEach((value) => {
@@ -38,12 +33,13 @@ const Variations = ({ attributes, register, control }) => {
             setCombinations(generateCombinations(attributes))
         }
     }, [attributes])
-    console.log("fields", fields)
+    // console.log("fields", fields)
+    // console.log("combinations", combinations)
     return (
         <div>
             {combinations.length > 0 && (
                 <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                         <p>Variaciones de Producto</p>
                         <table className="table table-striped">
                             <thead>
@@ -54,20 +50,16 @@ const Variations = ({ attributes, register, control }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {fields.map((combination, index) => (
+                                {combinations.map((combination, index) => (
                                     <tr key={`variation-${index}`}>
-                                        {console.log(
-                                            "combination",
-                                            combination
-                                        )}
                                         <td>
                                             <label>
-                                                {/* {combination
+                                                {combination
                                                     .map((attr) => attr?.value)
-                                                    .join(" - ")} */}
+                                                    .join(" - ")}
                                             </label>
                                             <input
-                                                type="number"
+                                                type="hidden"
                                                 className="form-control text-right"
                                                 name={`combinations[${index}].id`}
                                             />
@@ -95,6 +87,7 @@ const Variations = ({ attributes, register, control }) => {
                             </tbody>
                         </table>
                     </div>
+                    <div className="col-md-6"></div>
                 </div>
             )}
         </div>

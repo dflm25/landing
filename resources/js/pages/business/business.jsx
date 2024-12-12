@@ -11,6 +11,7 @@ function View() {
     const handleSubmit = async (e) => {
         const formData = new FormData()
         formData.append("name", e.name)
+        formData.append("subdomain", e.subdomain)
         e.logo_url && formData.append("logo_url", e.logo_url)
 
         const response = await create("business-info", formData)
