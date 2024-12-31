@@ -103,12 +103,21 @@ services:
     phpmyadmin:
         image: "phpmyadmin/phpmyadmin"
         ports:
-            - "8081:80"
+            - "8082:80"
         environment:
             PMA_HOST: mysql
             MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
         depends_on:
             - mysql
+        networks:
+            - sail
+    mongodb:
+        image: mongo:latest
+        container_name: mongodb
+        ports:
+            - "27017:27017"
+        volumes:
+            - sail-mongo:/data/db
         networks:
             - sail
 networks:
@@ -120,4 +129,6 @@ volumes:
     sail-redis:
         driver: local
     sail-meilisearch:
+        driver: local
+    sail-mongo:
         driver: local

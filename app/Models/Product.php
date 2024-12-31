@@ -11,7 +11,7 @@ class Product extends Model
     use HasFactory, HasUuid;
 
     protected $fillable = [
-        'business_id',
+        'business_info_id',
         'name',
         'description',
         'picture',

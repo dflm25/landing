@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventory', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('product_variation_id')->constrained('product_variations');
-            $table->integer('quantity');
-            $table->timestamps();
+        Schema::connection('mongodb')->create('variations', function (Blueprint $collection) {
+            $collection->string('product_id');
+            $collection->json('combinations');
         });
     }
 
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventory');
+        Schema::connection('mongodb')->drop('variations');
     }
 };

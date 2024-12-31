@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+
+use App\Models\Mongo\Variations;
+use App\Models\ProductAttributeImage;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -14,7 +17,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         if ($request->expectsJson()) {
-            $response = Product::where([ 'business_id'=> 1 ])->paginate(10);
+            $response = Product::where([ 'business_info_id'=> Auth::user()->businessInfo->id ])->paginate(10);
             return response()->json($response);
         }
         return view('app', ['title' => 'Productos', 'script' => 'products/products']);
@@ -37,16 +40,22 @@ class ProductController extends Controller
             $logoPath = $request->file('picture')->store('product', 'public');
         }
 
-        $product = new Product();
-        $product->business_info_id = Auth::user()->businessInfo->id;
-        $product->name = $request->input('name');
-        $product->description = $request->input('description');
-        $product->base_price = $request->input('base_price');
+        $product = Product::create([
+            'business_info_id' => Auth::user()->businessInfo->id,
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'base_price' => $request->input('base_price'),
+            'picture' => $logoPath ?? null
+        ]);
 
-        if ($logoPath) {
+        if ($logoPath ?? false) {
             $product->picture = $logoPath;
         }
-        $product->save();
+
+        Variations::create([
+            'product_id' => $product->id,
+            'combinations' => json_decode($request->input('combinations'))
+        ]);
 
         return response()->json(['message' => 'Atributo creado correctamente.', 'status' => 'success', 'data' => $product], 201);
     }
@@ -70,7 +79,35 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $product = Product::find($id);
+        $product->name = $request->input('name');
+        $product->description = $request->input('description');
+        $product->base_price = $request->input('base_price');
+
+        if ($request->hasFile('picture')) {
+            $logoPath = $request->file('picture')->store('product', 'public');
+            $product->picture = $logoPath;
+        }
+
+        Variations::where('product_id', $id)->update([
+            'combinations' => json_decode($request->input('combinations'))
+        ]);
+
+        if ($request->hasFile('pictures')) {
+            foreach ($request->file('pictures') as $key => $file) {
+                $logoPath = $file->store('product/'.$product->id, 'public');
+
+                ProductAttributeImage::create([
+                    'attribute_values_id' => $request->combination_id[$key],
+                    'product_id' => $product->id,
+                    'image' => $logoPath
+                ]);
+            }
+        }
+
+        $product->save();
+
+        return response()->json(['message' => 'Producto actualizado correctament'], 201);
     }
 
     /**

@@ -1,14 +1,14 @@
 import axios from "axios"
 import config from "../config"
 import { toast } from "react-toastify"
-// import { AsyncStorageGetData } from "./storage"
 
 // Create an Axios instance
 const request = axios.create({
-    baseURL: config.BASE_URL,
     // timeout: 10000, // Set a timeout limit
+    baseURL: config.BASE_URL,
     headers: {
         Accept: "application/json",
+        // "Content-Type": "multipart/form-data",
         // "Content-Type": "multipart/form-data",
     },
 })

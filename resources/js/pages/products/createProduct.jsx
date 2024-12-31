@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react"
 import Wrapper from "../../components/wrapper"
 import FormProduct from "../../components/forms/products"
 import render from "../../utils/render"
-import { create, getById, getByParam } from "../../services/crudServices"
+import {
+    create,
+    getById,
+    getByParam,
+    update,
+} from "../../services/crudServices"
+import { createFormData } from "../../utils/formData"
 
 const View = () => {
     const [product, setProduct] = useState(null)
@@ -20,14 +26,14 @@ const View = () => {
     }, [])
 
     const handleSubmit = async (e) => {
-        const formData = new FormData()
-        formData.append("name", e.name)
-        formData.append("base_price", e.base_price)
-        formData.append("description", e.description)
-        e.picture && formData.append("picture", e.logo_url)
+        const formData = createFormData(e)
 
-        const response = await create("products", formData)
-        window.location.href = `/products/${response.data.id}/edit`
+        if (e.id) {
+            const response = await update(`products`, formData, e.id)
+        } else {
+            const response = await create("products", formData)
+        }
+        // window.location.href = `/products/${response.data.id}/edit`
     }
     return (
         <Wrapper title="Crear un producto">

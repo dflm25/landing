@@ -26,21 +26,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('product_variations', function (Blueprint $table) {
+        Schema::create('product_attribute_images', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('product_id')->constrained('products')->onDelete('cascade');
-            $table->json('combinations'); // Stores the attribute-value combinations in JSON
-            $table->string('sku')->unique();
-            $table->decimal('price', 10, 2);
-            $table->integer('stock')->default(0);
-            $table->timestamps();
-        });
-
-        Schema::create('variation_attributes', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('product_variation_id')->constrained('product_variations')->onDelete('cascade');
-            $table->foreignUuid('attribute_id')->constrained('attributes')->onDelete('cascade');
-            $table->foreignUuid('attribute_value_id')->constrained('attribute_values')->onDelete('cascade');
+            $table->foreignUuid('attribute_values_id')->constrained('attribute_values')->onDelete('cascade');
+            $table->text('image');
             $table->timestamps();
         });
     }
@@ -52,7 +42,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('attributes');
         Schema::dropIfExists('attribute_values');
-        Schema::dropIfExists('product_variations');
-        Schema::dropIfExists('variation_attributes');
+        Schema::dropIfExists('product_attribute_images');
     }
 };
