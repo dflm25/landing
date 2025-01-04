@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+use App\Http\Requests\AttributesRequest;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
 
@@ -20,8 +21,8 @@ class AttributeController extends Controller
             if ($request->action === 'all') {
                 $response = Attribute::with('values')->where('business_info_id',  Auth::user()->businessInfo->id)->get();
                 return response()->json($response);
-            } 
-            
+            }
+
             $response = Attribute::with('values')->where('business_info_id',  Auth::user()->businessInfo->id)->paginate(10);
             return response()->json($response);
         }
@@ -31,7 +32,7 @@ class AttributeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AttributesRequest $request)
     {
         DB::transaction(function () use ($request) {
             $attribute = Attribute::create([
@@ -90,6 +91,7 @@ class AttributeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $response = Attribute::findOrFail($id)->delete();
+        return response()->json(['message' => 'Atributo eliminado correctamente.', 'status' => 'success']);
     }
 }

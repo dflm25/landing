@@ -45,7 +45,7 @@ function Wrapper({
             <Modal show={showModal} action={setShowModal} title={modalTitle}>
                 {form}
             </Modal>
-            <ToastContainer />
+            <ToastContainer limit={1} />
         </div>
     )
 }

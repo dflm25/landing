@@ -23,7 +23,6 @@ const Pictures = ({ attributes, register, control }) => {
             {attributes?.values?.length > 0 && (
                 <div className="row">
                     <div className="col-md-12">
-                        <p>Imagen por variacion</p>
                         <table className="table table-striped">
                             <thead>
                                 <tr>

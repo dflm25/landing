@@ -1,11 +1,13 @@
 import React, { useState } from "react"
+import swal from "sweetalert"
+
 import Datatable from "../../components/datatable"
 import withView from "../../hoc/tableList"
 import Wrapper from "../../components/wrapper"
 import Form from "../../components/forms/attributes"
 
 import { columns } from "./schema"
-import { create, getById, update } from "../../services/crudServices"
+import { create, getById, update, destroy } from "../../services/crudServices"
 import { arrayToString, showMessage } from "./util"
 import render from "../../utils/render"
 
@@ -15,11 +17,12 @@ const ViewContent = withView(({ data, isLoading, refresh, setRefresh }) => {
 
     const handleSubmit = async (formData) => {
         if (formData.id) {
-            showMessage(await update("attributes", formData))
+            showMessage(await update("attributes", formData, formData.id))
         } else {
             showMessage(await create("attributes", formData))
         }
         setRefresh(!refresh)
+        setShowModal(false)
     }
 
     const getToEdit = async (id) => {
@@ -27,6 +30,21 @@ const ViewContent = withView(({ data, isLoading, refresh, setRefresh }) => {
         item.attribute_values = arrayToString(item.values)
         setDefaultValue(item)
         setShowModal(true)
+    }
+
+    const handleDelete = async (id) => {
+        swal({
+            title: "Estas seguro?",
+            text: "Una vez eliminado, no podrá recuperar este registro!",
+            icon: "info",
+            buttons: true,
+            dangerMode: true,
+        }).then(async (willDelete) => {
+            if (willDelete) {
+                showMessage(await destroy(`attributes/${id}`, { status: 0 }))
+                setRefresh(!refresh)
+            }
+        })
     }
 
     return (
@@ -40,7 +58,7 @@ const ViewContent = withView(({ data, isLoading, refresh, setRefresh }) => {
                 columns={columns}
                 data={data}
                 isLoading={isLoading}
-                actions={{ getToEdit }}
+                actions={{ getToEdit, handleDelete }}
             />
         </Wrapper>
     )

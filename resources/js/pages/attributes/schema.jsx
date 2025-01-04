@@ -1,6 +1,6 @@
 import React from "react"
 
-export const columns = ({ getToEdit }) => {
+export const columns = ({ getToEdit, handleDelete }) => {
     return [
         {
             selector: (row) => row.name,
@@ -8,7 +8,6 @@ export const columns = ({ getToEdit }) => {
             sortable: true,
         },
         {
-            name: "base_price",
             sortable: true,
             cell: (row) => (
                 <div>
@@ -24,22 +23,23 @@ export const columns = ({ getToEdit }) => {
             ),
         },
         {
-            selector: "actions",
             name: "Actions",
-            maxWidth: "100px",
             cell: (row) => (
-                <div className="mw-100 text-right">
-
-                    {row.name.includes(['Color', 'Talla']) ? <><a
+                <div className="w-100 text-center">
+                    <a
                         href="#"
                         className="btn btn-warning btn-sm ml-2"
                         onClick={() => getToEdit(row.id)}
                     >
                         <i className="fa fa-edit"></i>
                     </a>
-                    <a href="button" className="btn btn-danger btn-sm ml-2">
+                    <a
+                        href="#"
+                        className="btn btn-danger btn-sm ml-2"
+                        onClick={() => handleDelete(row.id)}
+                    >
                         <i className="fa fa-trash"></i>
-                    </a></> : <span>...</span>}
+                    </a>
                 </div>
             ),
         },

@@ -25,3 +25,7 @@ export const getByParam = async (url, params) => {
     const queryString = new URLSearchParams(params).toString()
     return Http.get((url = `${url}?${queryString}`))
 }
+
+export const destroy = async (url) => {
+    return Http.delete(url)
+}

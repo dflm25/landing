@@ -16,6 +16,7 @@ class Product extends Model
         'description',
         'picture',
         'base_price',
+        'price_discount',
         'is_active'
     ];
 
@@ -25,5 +26,10 @@ class Product extends Model
     public function business()
     {
         return $this->belongsTo(BusinessInfo::class);
+    }
+
+    public function attributes ()
+    {
+        return $this->hasMany(ProductAttribute::class)->with('attribute');
     }
 }

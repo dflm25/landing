@@ -38,20 +38,23 @@ request.interceptors.response.use(
         if (response.status === 200) {
             toast.success(response?.data?.message)
         }
+
         return response.data
     },
     (error) => {
         // Handle response error
-        if (error.response) {
+        /* if (error.response) {
             // Server responded with a status other than 2xx
             console.error("Response error:", error.response.data)
         } else if (error.request) {
             // Request was made but no response received
-
             console.error("No response received:", error.message)
         } else {
             // Something else caused the error
             console.error("Error:", error.message)
+        } */
+        if (error.response.status === 422) {
+            toast.warning(error.response?.data?.message)
         }
         return Promise.reject(error)
     }

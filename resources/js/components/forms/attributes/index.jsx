@@ -5,12 +5,7 @@ import { TagsInput } from "react-tag-input-component"
 
 import schema from "./formSchema"
 
-const Form = ({
-    onSubmit,
-    defaultValues = {},
-    actions: {} = {},
-}) => {
-    console.log("defaultValues", defaultValues) 
+const Form = ({ onSubmit, defaultValues = {}, actions: {} = {} }) => {
     const {
         control,
         handleSubmit,

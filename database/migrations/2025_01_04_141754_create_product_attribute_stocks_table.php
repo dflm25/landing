@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('product_attribute_stocks', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignUuid('attribute_value_first')->constrained('attribute_values')->onDelete('cascade')->nullable();
+            $table->foreignUuid('attribute_value_second')->constrained('attribute_values')->onDelete('cascade')->nullable();
+
+            $table->text('name');
+            $table->text('sku')->nullable();
+
+            $table->float('stock');
+            $table->float('price');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('product_attribute_stocks');
+    }
+};

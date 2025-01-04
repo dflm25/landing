@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Mongo\Variations;
 use App\Models\ProductAttributeImage;
+use App\Models\ProductAttribute;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -45,19 +46,11 @@ class ProductController extends Controller
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'base_price' => $request->input('base_price'),
+            'price_discount' => $request->input('price_discount'),
             'picture' => $logoPath ?? null
         ]);
 
-        if ($logoPath ?? false) {
-            $product->picture = $logoPath;
-        }
-
-        Variations::create([
-            'product_id' => $product->id,
-            'combinations' => json_decode($request->input('combinations'))
-        ]);
-
-        return response()->json(['message' => 'Atributo creado correctamente.', 'status' => 'success', 'data' => $product], 201);
+        return response()->json(['message' => 'Producto creado correctamente.', 'status' => 'success', 'data' => $product], 201);
     }
 
     /**
@@ -66,7 +59,11 @@ class ProductController extends Controller
     public function edit(Request $request, string $id)
     {
         if ($request->expectsJson()) {
-            $response = Product::find($id);
+            $response = Product::with('attributes')->where('id', $id)->first();
+            $combinations = Variations::where('product_id', $id)->get();
+            $response['combinations'] = $combinations[0]->combinations ?? [];
+
+            // dd($response['combinations']);
             return response()->json($response);
         }
         return view('app', [
@@ -89,9 +86,16 @@ class ProductController extends Controller
             $product->picture = $logoPath;
         }
 
-        Variations::where('product_id', $id)->update([
-            'combinations' => json_decode($request->input('combinations'))
-        ]);
+        if (Variations::where('product_id', $id)->count() === 0) {
+            Variations::create([
+                'product_id' => $id,
+                'combinations' => json_decode($request->input('combinations'))
+            ]);
+        } else {
+            Variations::where('product_id', $id)->update([
+                'combinations' => json_decode($request->input('combinations'))
+            ]);
+        }
 
         if ($request->hasFile('pictures')) {
             foreach ($request->file('pictures') as $key => $file) {
@@ -103,6 +107,20 @@ class ProductController extends Controller
                     'image' => $logoPath
                 ]);
             }
+        }
+
+        foreach($request['attributes'] as $key => $attribute) {
+            ProductAttribute::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'attribute_id' => $attribute
+                ],
+                [
+                    'attribute_id' => $attribute,
+                    'product_id' => $product->id
+                ]
+            );
+
         }
 
         $product->save();

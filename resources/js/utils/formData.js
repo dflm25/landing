@@ -4,6 +4,7 @@ export const encodeCombinations = (combinations) => {
 
 export const createFormData = (data) => {
     const formData = new FormData()
+    console.log("data", data)
     for (const key in data) {
         if (key === "combinations") {
             formData.append(key, encodeCombinations(data[key]))
@@ -15,6 +16,11 @@ export const createFormData = (data) => {
                     formData.append("combination_id[]", picture.id)
                 })
             }
+            continue
+        } else if (key === "attributes") {
+            data[key]?.forEach((attribute, index) => {
+                formData.append("attributes[]", attribute.id)
+            })
             continue
         }
 
