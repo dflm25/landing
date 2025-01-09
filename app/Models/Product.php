@@ -30,6 +30,12 @@ class Product extends Model
 
     public function attributes ()
     {
-        return $this->hasMany(ProductAttribute::class)->with('attribute');
+        return $this->hasMany(ProductAttribute::class, 'product_id', 'id')
+            ->with('attribute');
+    }
+
+    public function combinations ()
+    {
+        return $this->hasMany(ProductAttributeStock::class, 'product_id', 'id');
     }
 }

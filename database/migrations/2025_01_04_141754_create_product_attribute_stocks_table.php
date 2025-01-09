@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('product_attribute_stocks', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignUuid('attribute_value_first')->constrained('attribute_values')->onDelete('cascade')->nullable();
-            $table->foreignUuid('attribute_value_second')->constrained('attribute_values')->onDelete('cascade')->nullable();
+            $table->foreignUuid('attribute_value_first')->constrained('attribute_values')->onDelete('cascade');
+            $table->foreignUuid('attribute_value_second')->nullable()->constrained('attribute_values')->onDelete('cascade');
 
             $table->text('name');
             $table->text('sku')->nullable();

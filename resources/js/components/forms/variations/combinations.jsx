@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react"
 
-const Combinations = ({ data, register, control }) => {
+const Combinations = ({ data, register }) => {
+    useEffect(() => {}, [data])
+
+    // console.log("combinations component", data)
+
     return (
         <div>
-            {data.length > 0 && (
+            {data?.length > 0 && (
                 <div className="row">
                     <div className="col-md-12">
                         <table className="table table-striped">
                             <thead>
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>Nombre</td>
+                                    <td className="text-right">Cantidad</td>
+                                    <td className="text-right">Precio</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -26,6 +30,24 @@ const Combinations = ({ data, register, control }) => {
                                                     { value: combination.name }
                                                 )}
                                             />
+                                            <input
+                                                type="hidden"
+                                                {...register(
+                                                    `combinations[${index}].attribute_value_first`,
+                                                    {
+                                                        value: combination.attribute_value_first,
+                                                    }
+                                                )}
+                                            />
+                                            <input
+                                                type="hidden"
+                                                {...register(
+                                                    `combinations[${index}].attribute_value_second`,
+                                                    {
+                                                        value: combination.attribute_value_second,
+                                                    }
+                                                )}
+                                            />
                                         </td>
                                         <td>
                                             <input
@@ -33,7 +55,7 @@ const Combinations = ({ data, register, control }) => {
                                                 className="form-control text-right"
                                                 placeholder="Cantidad"
                                                 {...register(
-                                                    `combinations[${index}].quantity`
+                                                    `combinations[${index}].stock`
                                                 )}
                                             />
                                         </td>

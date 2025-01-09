@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useForm, Controller } from "react-hook-form"
 import Select from "react-select"
 
@@ -6,13 +6,10 @@ import Combinations from "./combinations"
 import { combineAttributes } from "../../../utils/transformers"
 
 export default function Variations({
-    options = {},
+    options = [],
     onSubmit,
     defaultValues = {},
 }) {
-    const [value, setValue] = useState([])
-    const [combinations, setCombinations] = useState([])
-
     const {
         reset,
         register,
@@ -20,11 +17,16 @@ export default function Variations({
         control,
         formState: { errors },
         watch,
+        resetField,
+        setValue,
     } = useForm({
         // resolver: yupResolver(schema),
+        defaultValues,
     })
 
-    console.log("value", combineAttributes(value))
+    useEffect(() => {
+        reset(defaultValues)
+    }, [defaultValues])
 
     return (
         <div className="col-md-12">
@@ -33,25 +35,45 @@ export default function Variations({
                     <label htmlFor="attributes text-left">
                         Variaciones de Producto
                     </label>
-                    <Select
-                        onChange={(e) => {
-                            setValue(e)
-                            setCombinations(combineAttributes(e))
-                        }}
-                        value={value}
-                        options={options}
-                        isMulti
-                        getOptionValue={(option) => option.id}
-                        getOptionLabel={(option) => option.name}
-                        isOptionDisabled={() => value.length >= 2}
+                    <Controller
+                        name="attributes"
+                        control={control}
+                        defaultValue={defaultValues?.attributes}
+                        render={({ field: { onChange, value, ref } }) => (
+                            <Select
+                                inputRef={ref}
+                                onChange={(e) => {
+                                    onChange(e)
+                                    setValue(
+                                        "combinations",
+                                        combineAttributes(e)
+                                    )
+                                }}
+                                value={value}
+                                options={options}
+                                isMulti
+                                getOptionValue={(option) => option.id}
+                                getOptionLabel={(option) => option.name}
+                                isOptionDisabled={() =>
+                                    watch("attributes")?.length >= 2
+                                }
+                            />
+                        )}
                     />
                 </div>
-                <Combinations
-                    data={combinations}
-                    register={register}
-                    // defaultValues={defaultValues?.combinations}
+                <Controller
+                    name="combinations"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                        <Combinations
+                            data={value}
+                            register={register}
+                            onChange={onChange}
+                            value={value}
+                        />
+                    )}
                 />
-                {value.length > 0 && (
+                {watch("attributes")?.length > 0 && (
                     <button type="submit" className="btn btn-info mt-4">
                         {!defaultValues?.id
                             ? "Crear Producto"

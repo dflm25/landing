@@ -10,13 +10,18 @@ import {
     getByParam,
     update,
 } from "../../services/crudServices"
+import { showMessage } from "../../utils/toast"
 import { createFormData } from "../../utils/formData"
-import { tranformProductData } from "../../utils/transformers"
+import {
+    tranformProductData,
+    transformAttributesAndCombinations,
+} from "../../utils/transformers"
 
 const View = () => {
     const [product, setProduct] = useState({})
     const [attributes, setAttributes] = useState(null)
     const [showModal, setShowModal] = useState(false)
+    const [defaultValues, setDefaultValues] = useState({})
 
     useEffect(() => {
         ;(async () => {
@@ -41,7 +46,23 @@ const View = () => {
     }
 
     const handleVariationSubmit = async (formvalues) => {
-        console.log("formvalues::::", formvalues)
+        showMessage(
+            await create("combinations", {
+                ...formvalues,
+                product_id: product.id,
+            })
+        )
+    }
+
+    const handleShowModal = async () => {
+        setShowModal(true)
+        const response = await getByParam("common", {
+            model: "Product",
+            action: "customProduct",
+            id: product.id,
+        })
+        const data = transformAttributesAndCombinations(response)
+        setDefaultValues(data)
     }
 
     return (
@@ -51,9 +72,7 @@ const View = () => {
                     <button
                         type="button"
                         className="btn btn-warning btn-sm   "
-                        onClick={() => {
-                            setShowModal(true)
-                        }}
+                        onClick={handleShowModal}
                     >
                         Variaciones
                     </button>
@@ -68,6 +87,7 @@ const View = () => {
                 <Variations
                     options={attributes}
                     onSubmit={handleVariationSubmit}
+                    defaultValues={defaultValues}
                 />
             </Modal>
         </Wrapper>
