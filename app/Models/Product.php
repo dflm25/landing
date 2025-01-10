@@ -36,6 +36,11 @@ class Product extends Model
 
     public function combinations ()
     {
-        return $this->hasMany(ProductAttributeStock::class, 'product_id', 'id');
+        return $this->hasMany(ProductAttributeStock::class, 'product_id', 'id')->orderBy('name');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductAttributeImage::class, 'product_id', 'id');
     }
 }

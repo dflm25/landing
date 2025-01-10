@@ -16,6 +16,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('products', App\Http\Controllers\ProductController::class);
         Route::resource('attributes', App\Http\Controllers\AttributeController::class);
         Route::resource('combinations', App\Http\Controllers\CombinationController::class);
+        Route::resource('medias', App\Http\Controllers\MediaController::class);
 
         // common routes
         Route::get('/common', [App\Http\Controllers\CommonController::class, 'index'])->name('home');

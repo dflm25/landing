@@ -24,6 +24,8 @@
         "@easyblocks/editor": "^1.0.10",
         "@hookform/resolvers": "^3.9.1",
         "@measured/puck": "^0.16.2",
+        "html-react-parser": "^5.2.2",
+        "intro.js-react": "^1.0.0",
         "react-data-table-component": "^7.6.2",
         "react-hook-form": "^7.53.2",
         "react-media-library": "^2.0.3",

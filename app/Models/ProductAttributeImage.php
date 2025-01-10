@@ -11,7 +11,7 @@ class ProductAttributeImage extends Model
     use HasFactory, HasUuid;
     //
     protected $table = 'product_attribute_images';
-    protected $fillable = ['attribute_values_id', 'product_id', 'image'];
+    protected $fillable = ['attribute_id', 'attribute_value_id', 'product_id', 'image'];
 
     public function productAttribute()
     {

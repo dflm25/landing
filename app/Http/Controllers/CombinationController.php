@@ -52,7 +52,7 @@ class CombinationController extends Controller
     public function edit(string $id)
     {
         //
-        return ProductAttributeStock::where('product_id', $id)->get();
+        return ProductAttributeStock::where('product_id', $id)->orderBy('name')->get();
     }
 
     /**

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { useFieldArray } from "react-hook-form"
+import config from "../../../config"
 
-const Pictures = ({ attributes, register, control }) => {
+const Pictures = ({ attributes, control, defaultValues }) => {
     const [file, setFile] = useState({})
 
     const { fields, append, remove } = useFieldArray({
@@ -17,6 +18,25 @@ const Pictures = ({ attributes, register, control }) => {
             append({ id, file: e.target.files[0] })
         }
     }
+
+    const renderImage = (defaultValues, id) => {
+        if (defaultValues) {
+            const picture = defaultValues.find(
+                (item) => item.attribute_value_id === id
+            )
+            if (picture) {
+                return (
+                    <img
+                        src={`${config.BASE_URL}storage/${picture.image}`}
+                        alt="imagen"
+                        style={{ width: "50px" }}
+                    />
+                )
+            }
+        }
+    }
+    // console.log("attributes", attributes)
+    console.log("defaultValues", defaultValues)
 
     return (
         <div>
@@ -52,6 +72,12 @@ const Pictures = ({ attributes, register, control }) => {
                                                     )
                                                 }
                                             />
+                                        </td>
+                                        <td>
+                                            {renderImage(
+                                                defaultValues,
+                                                combination?.id
+                                            )}
                                         </td>
                                     </tr>
                                 ))}

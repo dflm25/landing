@@ -31,8 +31,15 @@ const Form = ({ onSubmit, defaultValues = {}, options = [] }) => {
             setAttributes(defaultValues.attributes)
         }
 
+        if (defaultValues?.attribute_by_pictures && options?.length > 0) {
+            const selected = options.filter(
+                (item) => item.id === defaultValues.attribute_by_pictures
+            )
+            setSelectedPictures(selected[0])
+        }
+
         reset(defaultValues)
-    }, [defaultValues])
+    }, [defaultValues, options])
 
     const handleFileChange = (e) => {
         if (e.target.files) {
@@ -152,7 +159,7 @@ const Form = ({ onSubmit, defaultValues = {}, options = [] }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-md-4">
+                            <div className="col-md-4 text-right">
                                 {!thumbnail
                                     ? renderImage(defaultValues, "picture")
                                     : renderThumbnail(thumbnail)}
@@ -184,6 +191,7 @@ const Form = ({ onSubmit, defaultValues = {}, options = [] }) => {
                                 )}
                             </div>
                         </div>
+                        <hr className="pt-3" />
                         {defaultValues && (
                             <div className="form-group mt-3">
                                 <label htmlFor="attribute_by_pictures">
@@ -194,29 +202,31 @@ const Form = ({ onSubmit, defaultValues = {}, options = [] }) => {
                                     control={control}
                                     render={({
                                         field: { onChange, value },
-                                    }) => (
-                                        <Select
-                                            isClearable
-                                            options={options}
-                                            getOptionValue={(option) =>
-                                                option.id
-                                            }
-                                            getOptionLabel={(option) =>
-                                                option.name
-                                            }
-                                            onChange={(e) => {
-                                                onChange(e.id)
-                                                setSelectedPictures(e)
-                                            }}
-                                            value={
-                                                options &&
-                                                options.filter(
-                                                    (option) =>
-                                                        option.id === value
-                                                )
-                                            }
-                                        />
-                                    )}
+                                    }) => {
+                                        return (
+                                            <Select
+                                                isClearable
+                                                options={options}
+                                                getOptionValue={(option) =>
+                                                    option.id
+                                                }
+                                                getOptionLabel={(option) =>
+                                                    option.name
+                                                }
+                                                onChange={(e) => {
+                                                    onChange(e.id)
+                                                    setSelectedPictures(e)
+                                                }}
+                                                value={
+                                                    options &&
+                                                    options.filter(
+                                                        (option) =>
+                                                            option.id === value
+                                                    )
+                                                }
+                                            />
+                                        )
+                                    }}
                                 />
                             </div>
                         )}
@@ -224,6 +234,7 @@ const Form = ({ onSubmit, defaultValues = {}, options = [] }) => {
                             attributes={selectedPictures}
                             register={register}
                             control={control}
+                            defaultValues={defaultValues?.images}
                         />
                     </div>
                 </div>

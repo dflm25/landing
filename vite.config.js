@@ -14,6 +14,7 @@ export default defineConfig({
                 "resources/js/pages/products/createProduct.jsx",
                 "resources/js/pages/variations/variations.jsx",
                 "resources/js/pages/business/business.jsx",
+                "resources/js/pages/medias/medias.jsx",
                 // "resources/js/**/index.jsx",
                 // 'resources/js/app.js',
             ],

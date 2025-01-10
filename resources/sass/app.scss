@@ -9,8 +9,9 @@
 
 .logo-busines {
     width: 100%;
-    max-width: 420px;
+    max-width: 320px;
     object-fit: cover;
+    align-self: center;
 }
 
 label {
@@ -20,6 +21,12 @@ label {
     color: #005b9a;
     width: 100%;
     text-align: left;
+}
+input {
+    background: #fff !important;
+}
+.rsw-ce {
+    background: #fff !important;
 }
 
 .product-image {
@@ -37,4 +44,10 @@ label {
 .thumbnail:hover,
 .thumbnail.active {
     opacity: 1;
+}
+
+.mainProductImage {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
 }

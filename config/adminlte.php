@@ -311,10 +311,10 @@ return [
         ],
 
         // Sidebar items:
-        [
+        /* [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
-        ],
+        ], */
         [
             'text' => 'blog',
             'url' => 'admin/blog',
@@ -323,19 +323,28 @@ return [
         [
             'text' => 'pages',
             'url' => 'pages',
-            'icon' => 'far fa-fw fa-file',
+            'icon' => 'fa fa-fw fa-indent',
             'label' => 4,
             'label_color' => 'success',
+            'id' => 'pages-menu',
         ],
         [
             'text' => 'Atributos',
             'url' => 'attributes',
             'icon' => 'far fa-fw fa-file',
+            'id' => 'attributes-menu',
         ],
         [
             'text' => 'Productos',
             'url' => 'products',
-            'icon' => 'far fa-fw fa-file',
+            'icon' => 'fa fa-fw fa-search', // <i class="fa-brands fa-product-hunt"></i>
+            'id' => 'products-menu',
+        ],
+        [
+            'text' => 'Media',
+            'url' => 'medias',
+            'icon' => 'far fa-fw fa-image',
+            'id' => 'medias-menu',
         ],
         /* ['header' => 'account_settings'],
         [

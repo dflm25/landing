@@ -17,7 +17,6 @@ export default function Variations({
         control,
         formState: { errors },
         watch,
-        resetField,
         setValue,
     } = useForm({
         // resolver: yupResolver(schema),
@@ -27,6 +26,8 @@ export default function Variations({
     useEffect(() => {
         reset(defaultValues)
     }, [defaultValues])
+
+    // console.log("watch::::: ", watch("combinations"))
 
     return (
         <div className="col-md-12">

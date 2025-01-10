@@ -25,13 +25,44 @@ function View() {
                 user_id: "true",
             })
             setBusinessInfo(response)
+
+            introJs()
+                .setOptions({
+                    disableInteraction: true,
+                    nextLabel: "Siguiente",
+                    prevLabel: "Anterior",
+                    doneLabel: "Listo",
+                    steps: [
+                        {
+                            element: document.querySelector(
+                                "#business-info-container"
+                            ),
+                            title: "Bienvenido!",
+                            intro: "Lo primero que debes de hacer es actualizar la informacion de tu cuenta",
+                        },
+                        {
+                            element: document.querySelector("#attributes-menu"),
+                            intro: 'Ingresa los attributos de tus productos en esta seccion ejemplo: "Color", "Talla", "Material"',
+                        },
+                        {
+                            element: document.querySelector("#products-menu"),
+                            intro: "Agrega tus productos en esta seccion para que tus clientes puedan verlos",
+                        },
+                        {
+                            title: "Farewell!",
+                            element: document.querySelector("#pages-menu"),
+                            intro: "Finalmente puedes crear una landing page para tu producto y asi vender mas",
+                        },
+                    ],
+                })
+                .start()
         })()
     }, [])
 
     return (
         <div className="row">
             <div className="col-md-12">
-                <div className="card">
+                <div className="card" id="business-info-container">
                     <div className="card-header ui-sortable-handle">
                         <h3 className="card-title info"></h3>
                         <div className="card-tools"></div>

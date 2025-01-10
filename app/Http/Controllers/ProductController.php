@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Mongo\Variations;
 use App\Models\ProductAttributeImage;
-use App\Models\ProductAttribute;
+use App\Models\Attribute;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -37,8 +37,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->hasFile('picture')) {
-            $logoPath = $request->file('picture')->store('product', 'public');
+        if ($request->hasFile('logo_url')) {
+            $logoPath = $request->file('logo_url')->store('product', 'public');
         }
 
         $product = Product::create([
@@ -59,11 +59,15 @@ class ProductController extends Controller
     public function edit(Request $request, string $id)
     {
         if ($request->expectsJson()) {
-            $response = Product::with('attributes')->where('id', $id)->first();
+            $response = Product::with(['attributes', 'images'])->where('id', $id)->first();
             $combinations = Variations::where('product_id', $id)->get();
             $response['combinations'] = $combinations[0]->combinations ?? [];
 
-            // dd($response['combinations']);
+            if (isset($response->images[0]->attribute_id)) {
+                $response['attribute_by_pictures'] = $response->images[0]->attribute_id;
+
+            }
+
             return response()->json($response);
         }
         return view('app', [
@@ -81,8 +85,8 @@ class ProductController extends Controller
         $product->description = $request->input('description');
         $product->base_price = $request->input('base_price');
 
-        if ($request->hasFile('picture')) {
-            $logoPath = $request->file('picture')->store('product', 'public');
+        if ($request->hasFile('logo_url')) {
+            $logoPath = $request->file('logo_url')->store('product', 'public');
             $product->picture = $logoPath;
         }
 
@@ -102,30 +106,16 @@ class ProductController extends Controller
                 $logoPath = $file->store('product/'.$product->id, 'public');
 
                 ProductAttributeImage::create([
-                    'attribute_values_id' => $request->combination_id[$key],
+                    'attribute_id' => $request->attribute_by_pictures,
+                    'attribute_value_id' => $request->combination_id[$key],
                     'product_id' => $product->id,
                     'image' => $logoPath
                 ]);
             }
         }
-
-        foreach($request['attributes'] as $key => $attribute) {
-            ProductAttribute::updateOrCreate(
-                [
-                    'product_id' => $product->id,
-                    'attribute_id' => $attribute
-                ],
-                [
-                    'attribute_id' => $attribute,
-                    'product_id' => $product->id
-                ]
-            );
-
-        }
-
         $product->save();
 
-        return response()->json(['message' => 'Producto actualizado correctament'], 201);
+        return response()->json(['message' => 'Producto actualizado correctamente', 'status' => 'success'], 201);
     }
 
     /**

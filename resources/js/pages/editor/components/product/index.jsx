@@ -1,6 +1,9 @@
 import React, { useState, useEffect, act } from "react"
 import Select from "react-select"
+import parse from "html-react-parser"
 
+import { defaultImage } from "../../constants"
+import config from "../../../../config"
 import { getByParam } from "../../../../services/crudServices"
 
 const Product = (props) => {
@@ -11,6 +14,7 @@ const Product = (props) => {
             const data = await getByParam("common", {
                 model: "Product",
                 action: "byId",
+                with: ["images", "attributes", "combinations"],
                 id: props.myProduct.id,
             })
 
@@ -18,133 +22,125 @@ const Product = (props) => {
         })()
     }, [props.myProduct])
 
+    console.log(myProduct.picture)
     return (
-        <div class="container mt-5 mb-5">
-            <div class="row">
-                <div class="col-md-6 mb-4">
+        <div className="container mt-5 mb-5">
+            <div className="row">
+                <div className="col-md-6 mb-4">
                     <img
-                        src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxfHxoZWFkcGhvbmV8ZW58MHwwfHx8MTcyMTMwMzY5MHww&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=1080"
+                        src={`${
+                            myProduct.picture
+                                ? `${config.BASE_URL}storage/${myProduct.picture}`
+                                : defaultImage
+                        }`}
                         alt="Product"
-                        class="img-fluid rounded mb-3 product-image"
+                        className="img-fluid rounded mb-3 product-image mainProductImage"
                         id="mainImage"
                     />
-                    <div class="d-flex justify-content-between">
-                        <img
-                            src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxfHxoZWFkcGhvbmV8ZW58MHwwfHx8MTcyMTMwMzY5MHww&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=1080"
-                            alt="Thumbnail 1"
-                            class="thumbnail rounded active"
-                            onclick="changeImage(event, this.src)"
-                        />
-                        <img
-                            src="https://images.unsplash.com/photo-1528148343865-51218c4a13e6?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwzfHxoZWFkcGhvbmV8ZW58MHwwfHx8MTcyMTMwMzY5MHww&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=1080"
-                            alt="Thumbnail 2"
-                            class="thumbnail rounded"
-                            onclick="changeImage(event, this.src)"
-                        />
-                        <img
-                            src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxfHxoZWFkcGhvbmV8ZW58MHwwfHx8MTcyMTMwMzY5MHww&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=1080"
-                            alt="Thumbnail 3"
-                            class="thumbnail rounded"
-                            onclick="changeImage(event, this.src)"
-                        />
-                        <img
-                            src="https://images.unsplash.com/photo-1528148343865-51218c4a13e6?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwzfHxoZWFkcGhvbmV8ZW58MHwwfHx8MTcyMTMwMzY5MHww&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=1080"
-                            alt="Thumbnail 4"
-                            class="thumbnail rounded"
-                            onclick="changeImage(event, this.src)"
-                        />
+                    <div className="d-flex justify-content-between">
+                        {myProduct.images
+                            ? myProduct.images.map((item) => (
+                                  <img
+                                      key={`thumbnail-${item.id}`}
+                                      src={`${config.BASE_URL}storage/${item.image}`}
+                                      alt="Thumbnail 1"
+                                      className="thumbnail rounded active"
+                                  />
+                              ))
+                            : [1, 2, 3, 4].map((i) => (
+                                  <img
+                                      key={`thumbnail-${i}`}
+                                      src={defaultImage}
+                                      alt="Thumbnail 1"
+                                      className="thumbnail rounded active"
+                                  />
+                              ))}
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <h2 class="mb-3">{myProduct.name}</h2>
-                    <p class="text-muted mb-4">SKU: WH1000XM4</p>
-                    <div class="mb-3">
-                        <span class="h4 me-2">{myProduct.base_price}</span>
-                        <span class="text-muted">
-                            <s>{myProduct.base_price}</s>
+                <div className="col-md-6">
+                    <h2 className="mb-3">{myProduct.name}</h2>
+                    <p className="text-muted mb-4">SKU: WH1000XM4</p>
+                    <div className="mb-3">
+                        <span className="h4 me-2">{myProduct.base_price}</span>
+                        <span className="text-muted">
+                            <s>{myProduct.price_discount}</s>
                         </span>
                     </div>
-                    <div class="mb-3">
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-half text-warning"></i>
-                        <span class="ms-2">4.5 (120 reviews)</span>
+                    <div className="mb-3">
+                        <i className="bi bi-star-fill text-warning"></i>
+                        <i className="bi bi-star-fill text-warning"></i>
+                        <i className="bi bi-star-fill text-warning"></i>
+                        <i className="bi bi-star-fill text-warning"></i>
+                        <i className="bi bi-star-half text-warning"></i>
+                        <span className="ms-2">4.5 (120 reviews)</span>
                     </div>
-                    <p class="mb-4">{myProduct.description}</p>
-                    <div class="mb-4">
+                    <p className="mb-4">
+                        {parse(myProduct.description || "<span></span>")}
+                    </p>
+                    <div className="mb-4">
                         <h5>Color:</h5>
                         <div
-                            class="btn-group"
+                            className="btn-group"
                             role="group"
                             aria-label="Color selection"
                         >
                             <input
                                 type="radio"
-                                class="btn-check"
+                                className="btn-check"
                                 name="color"
                                 id="black"
-                                autocomplete="off"
                                 checked=""
                             />
-                            <label class="btn btn-outline-dark" for="black">
+                            <label className="btn btn-outline-dark" for="black">
                                 Black
                             </label>
                             <input
                                 type="radio"
-                                class="btn-check"
+                                className="btn-check"
                                 name="color"
                                 id="silver"
-                                autocomplete="off"
                             />
                             <label
-                                class="btn btn-outline-secondary"
+                                className="btn btn-outline-secondary"
                                 for="silver"
                             >
                                 Silver
                             </label>
                             <input
                                 type="radio"
-                                class="btn-check"
+                                className="btn-check"
                                 name="color"
                                 id="blue"
                                 autocomplete="off"
                             />
-                            <label class="btn btn-outline-primary" for="blue">
+                            <label
+                                className="btn btn-outline-primary"
+                                for="blue"
+                            >
                                 Blue
                             </label>
                         </div>
                     </div>
-                    <div class="mb-4">
-                        <label for="quantity" class="form-label">
+                    <div className="mb-4">
+                        <label for="quantity" className="form-label">
                             Quantity:
                         </label>
                         <input
                             type="number"
-                            class="form-control"
+                            className="form-control"
                             id="quantity"
                             value="1"
                             min="1"
                             style={{ width: "80px" }}
                         />
                     </div>
-                    <button class="btn btn-primary btn-lg mb-3 me-2">
-                        <i class="bi bi-cart-plus"></i> Add to Cart
+                    <button className="btn btn-primary btn-lg mb-3 me-2">
+                        <i className="bi bi-cart-plus"></i> Add to Cart
                     </button>
-                    <button class="btn btn-outline-secondary btn-lg mb-3">
-                        <i class="bi bi-heart"></i> Add to Wishlist
+                    <button className="btn btn-outline-secondary btn-lg mb-3">
+                        <i className="bi bi-heart"></i> Add to Wishlist
                     </button>
-                    <div class="mt-4">
-                        <h5>Key Features:</h5>
-                        <ul>
-                            <li>Industry-leading noise cancellation</li>
-                            <li>30-hour battery life</li>
-                            <li>Touch sensor controls</li>
-                            <li>Speak-to-chat technology</li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -152,6 +148,7 @@ const Product = (props) => {
 }
 
 const product = {
+    label: "Producto",
     fields: {
         myProduct: {
             type: "custom",

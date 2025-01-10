@@ -32,10 +32,15 @@ class CommonController extends Controller
 
     public function getById($request, $model)
     {
+        $with = isset($request->with) ? explode(',', $request->with) : [];
         return $model::where([
             'id' => $request->id,
             'business_info_id'=> Auth::user()->businessInfo->id
-        ])->first();
+        ])
+        ->when(count($with) > 0, function ($query) use ($with) {
+            return $query->with($with);
+        })
+        ->first();
     }
 
     public function getAll($model)

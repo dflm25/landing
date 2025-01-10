@@ -35,7 +35,6 @@ export const transformAttributesAndCombinations = (data) => {
 }
 
 export const deleteDuplicate = (data) => {
-    console.log("deleteDuplicate", data)
     return data.filter(
         (value, index, self) =>
             index ===

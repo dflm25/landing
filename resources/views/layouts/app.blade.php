@@ -11,11 +11,11 @@
 @stop
 
 @section('css')
-    {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/minified/introjs.min.css">
 @stop
 
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
     @php
         $file = 'resources/js/pages/'.($script ?? '').'.jsx';
     @endphp
@@ -24,3 +24,4 @@
         @vite(['resources/sass/app.scss', $file])
     @endif
 @stop
+

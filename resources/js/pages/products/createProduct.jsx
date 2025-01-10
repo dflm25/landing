@@ -38,7 +38,7 @@ const View = () => {
         const formData = createFormData(e)
 
         if (e.id) {
-            const response = await update(`products`, formData, e.id)
+            showMessage(await update(`products`, formData, e.id))
         } else {
             const response = await create("products", formData)
             window.location.href = `/products/${response.data.id}/edit`
@@ -52,6 +52,7 @@ const View = () => {
                 product_id: product.id,
             })
         )
+        setShowModal(false)
     }
 
     const handleShowModal = async () => {

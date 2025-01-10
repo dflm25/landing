@@ -56,6 +56,6 @@ class BusinessController extends Controller
         }
         $businessInfo->save();
 
-        return response()->json(['message' => 'Business information saved successfully', 'data' => $businessInfo], 201);
+        return response()->json(['message' => 'Business information saved successfully', 'data' => $businessInfo, 'status' => 'success'], 201);
     }
 }

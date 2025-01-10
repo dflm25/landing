@@ -29,7 +29,7 @@ return new class extends Migration
         Schema::create('product_attribute_images', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignUuid('attribute_values_id')->constrained('attribute_values')->onDelete('cascade');
+            $table->foreignUuid('attribute_id')->constrained('attributes')->onDelete('cascade');
             $table->text('image');
             $table->timestamps();
         });
