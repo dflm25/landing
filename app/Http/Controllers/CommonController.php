@@ -76,4 +76,12 @@ class CommonController extends Controller
 
         return $product;
     }
+
+    public function image($id)
+    {
+        $media = \App\Models\Media::find($id);
+        $path = storage_path('app/public/' . $media->path);
+
+        return response()->file($path);
+    }
 }

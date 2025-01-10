@@ -8,6 +8,7 @@ import HeroVideo from "./components/heroVideo"
 import heroText from "./components/heroText"
 import CallToAction from "./components/callToAction"
 import product from "./components/product"
+import social from "./components/social"
 
 import "@measured/puck/puck.css"
 // import { fields } from "./components/hero/constants"
@@ -25,6 +26,7 @@ const config = {
     components: {
         heroText,
         heroImage,
+        social,
         heroVideo: {
             label: "Hero Video",
             fields: {},
@@ -51,6 +53,26 @@ const config = {
                 <div style={{ padding: 20 }}>
                     <p>{text}</p>
                 </div>
+            ),
+        },
+        Footer: {
+            fields: {
+                text: { type: "text" },
+            },
+            defaultProps: {
+                text: "Footer",
+            },
+            render: ({ text }) => (
+                <footer class="footer text-center">
+                    <div class="container">
+                        <p>Copyright &copy; 2024. All rights reserved.</p>
+                        <p>
+                            Designed with{" "}
+                            <span class="text-danger">&hearts;</span> by Your
+                            Name
+                        </p>
+                    </div>
+                </footer>
             ),
         },
     },

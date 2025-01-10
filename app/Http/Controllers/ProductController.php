@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 use App\Models\Mongo\Variations;
 use App\Models\ProductAttributeImage;
-use App\Models\Attribute;
 use App\Models\Product;
 
 class ProductController extends Controller

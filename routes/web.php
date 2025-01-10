@@ -20,6 +20,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         // common routes
         Route::get('/common', [App\Http\Controllers\CommonController::class, 'index'])->name('home');
+        Route::get('/image/{id}', [App\Http\Controllers\CommonController::class, 'image']);
     });
 
     Route::resource('business-info', App\Http\Controllers\BusinessController::class);

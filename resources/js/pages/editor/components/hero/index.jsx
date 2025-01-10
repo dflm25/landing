@@ -1,6 +1,7 @@
 import React from "react"
-import { ReactMediaLibrary } from "react-media-library"
 
+import Modal from "../../../../components/modal"
+import Media from "../../../../pages/medias/medias"
 import { images } from "./constants"
 
 function Hero({ title, intro, heroImage }) {
@@ -69,18 +70,13 @@ const heroImage = {
 
                         return (
                             <div>
-                                <ReactMediaLibrary
-                                    isOpen={isOpen}
-                                    onClose={() => setIsOpen(false)}
-                                    fileLibraryList={images}
-                                    filesSelectCallback={(files) => {
-                                        console.log("Select files", files)
-                                    }}
-                                    multiSelect={false}
-                                    fileUploadCallback={(file) =>
-                                        console.log("Upload file", file)
-                                    }
-                                />
+                                <Modal
+                                    show={isOpen}
+                                    action={() => setIsOpen(false)}
+                                >
+                                    <Media />
+                                </Modal>
+
                                 <button
                                     className="btn btn-info btn-sm w-100"
                                     onClick={() => setIsOpen(true)}
